@@ -14,13 +14,28 @@ let package = Package(
         .library(
             name: "SteamKit",
             targets: ["SteamKit"]
+        ),
+        .executable(
+            name: "SteamKitCLI",
+            targets: ["SteamKitCLI"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
+    ],
     targets: [
         .target(
             name: "SteamKit",
-            dependencies: []),
+            dependencies: []
+        ),
+        .executableTarget(
+            name: "SteamKitCLI",
+            dependencies: [
+                "SteamKit",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ],
+            sources: ["SteamKitCLI.swift"]
+        ),
         .testTarget(
             name: "SteamKitTests",
             dependencies: ["SteamKit"]
