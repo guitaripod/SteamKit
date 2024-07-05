@@ -11,7 +11,7 @@ SteamKit is a Swift package that provides a convenient wrapper around the Steam 
 
 ## Requirements
 
-- Swift 5.10
+- Swift 5.9
 - iOS 17.0+
 - macOS 14.0+
 - tvOS 17.0+
