@@ -1,6 +1,11 @@
 # SteamKit
 
+[![wakatime](https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/4db0c91f-a68b-466f-84dd-6392013b5654.svg)](https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/4db0c91f-a68b-466f-84dd-6392013b5654)
+
 SteamKit is a Swift package that provides a convenient wrapper around the Steam Web API. I created this package to make it easier for iOS, macOS, tvOS, and watchOS developers to integrate Steam functionality into their apps.
+
+### [DocC Documentation](https://marcusziade.github.io/SteamKit/documentation/steamkit/)
+
 
 ## Features
 
