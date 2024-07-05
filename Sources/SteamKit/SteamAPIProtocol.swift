@@ -54,12 +54,11 @@ public protocol SteamAPIProtocol {
 
     /// Retrieves news articles for a specific app.
     /// - Parameters:
-    ///   - appID: The app ID to get news for.
-    ///   - count: The number of news items to retrieve.
-    ///   - maxLength: Optional maximum length for the contents field.
+    ///   - steamID: A Steam ID string.
+    ///   - appID: The app ID of the game.
     /// - Returns: An array of NewsItem objects.
     /// - Throws: A SteamKitError if the request fails or the response can't be decoded.
-    func getNewsForApp(appID: Int, count: Int, maxLength: Int?) async throws -> [NewsItem]
+    func getNewsForApp(steamID: String, appID: Int) async throws -> [NewsItem]
 
     /// Retrieves the global achievement percentages for a specific game.
     /// - Parameter gameID: The game ID to get achievement percentages for.

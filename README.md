@@ -68,9 +68,9 @@ do {
 - `getPlayerAchievements(steamID:appID:)`
   - Retrieves the achievements for a player in a specific game
   - Parameters: `steamID` - A Steam ID string, `appID` - The app ID of the game
-- `getNewsForApp(appID:count:maxLength:)`
+- `getNewsForApp(steamID:appID:)`
   - Retrieves news articles for a specific app
-  - Parameters: `appID` - The app ID to get news for, `count` - The number of news items to retrieve, `maxLength` - Optional maximum length for the contents field
+  - Parameters: `steamID` - A Steam ID string, `appID` - The app ID of the game
 - `getGlobalAchievementPercentagesForApp(gameID:)`
   - Retrieves the global achievement percentages for a specific game
   - Parameter: `gameID` - The game ID to get achievement percentages for

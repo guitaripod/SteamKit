@@ -42,12 +42,9 @@ public struct SteamAPI: SteamAPIProtocol {
         return response.playerstats.achievements
     }
 
-    public func getNewsForApp(appID: Int, count: Int, maxLength: Int?) async throws -> [NewsItem] {
+    public func getNewsForApp(steamID: String, appID: Int) async throws -> [NewsItem] {
         let endpoint = "\(baseURL)/ISteamNews/GetNewsForApp/v0002/"
-        var parameters = ["appid": String(appID), "count": String(count)]
-        if let maxLength = maxLength {
-            parameters["maxlength"] = String(maxLength)
-        }
+        let parameters = ["key": apiKey, "steamid": steamID, "appid": String(appID)]
         let data = try await networkClient.performRequest(url: endpoint, parameters: parameters)
         let response = try JSONDecoder().decode(NewsForAppResponse.self, from: data)
         return response.appnews.newsitems
