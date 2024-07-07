@@ -5,11 +5,12 @@ public struct PlayerSummary: Codable {
     public let communityvisibilitystate: Int
     public let profilestate: Int
     public let personaname: String
-    public let profileurl: String
-    public let avatar: String
-    public let avatarmedium: String
-    public let avatarfull: String
-    public let lastlogoff: Int
+    public let profileurl: URL
+    public let avatar: URL
+    public let avatarmedium: URL
+    public let avatarfull: URL
+    public let avatarhash: String?
+    public let lastlogoff: Int?
     public let personastate: Int
     public let realname: String?
     public let primaryclanid: String?

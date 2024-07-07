@@ -38,7 +38,12 @@ let package = Package(
         ),
         .testTarget(
             name: "SteamKitTests",
-            dependencies: ["SteamKit"]
+            dependencies: ["SteamKit"],
+            resources: [
+                .copy("Resources/player_summaries_response.json"),
+                .copy("Resources/news_response.json"),
+                .copy("Resources/user_owned_games_response.json"),
+            ]
         ),
     ]
 )
