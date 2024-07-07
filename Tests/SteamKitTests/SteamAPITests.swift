@@ -15,7 +15,7 @@ struct SteamAPITests {
         
         let playerSummary = try #require(response.response.players.first)
         #expect(playerSummary.steamid == "76561198025885249")
-        #expect(playerSummary.communityvisibilitystate == 3)
+        #expect(playerSummary.communityvisibilitystate == .public)
         #expect(playerSummary.profilestate == 1)
         #expect(playerSummary.personaname == "V")
         #expect(playerSummary.profileurl == URL(string: "https://steamcommunity.com/id/kratos42069/"))
@@ -23,12 +23,33 @@ struct SteamAPITests {
         #expect(playerSummary.avatarmedium == URL(string: "https://avatars.steamstatic.com/a521352ec938d97a89f4b9655f75924d3cea6344_medium.jpg"))
         #expect(playerSummary.avatarfull == URL(string: "https://avatars.steamstatic.com/a521352ec938d97a89f4b9655f75924d3cea6344_full.jpg"))
         #expect(playerSummary.lastlogoff == 1_720_361_031)
-        #expect(playerSummary.personastate == 4)
+        #expect(playerSummary.personastate == .snooze)
         #expect(playerSummary.primaryclanid == "103582791429521408")
         #expect(playerSummary.timecreated == 1_274_786_706)
-        #expect(playerSummary.personastateflags == 0)
+        #expect(playerSummary.personastateflags == [])
         #expect(playerSummary.loccountrycode == "US")
         #expect(playerSummary.locstatecode == "CA")
+        
+        // Test computed properties
+        #expect(playerSummary.displayName == "V")
+        #expect(playerSummary.isProfilePublic == true)
+        #expect(playerSummary.onlineStatus == "Snooze")
+        #expect(playerSummary.isUsingVR == false)
+        #expect(playerSummary.currentClientType == "Desktop")
+        
+        // Test creation date
+        let expectedCreationDate = Date(timeIntervalSince1970: 1_274_786_706)
+        #expect(playerSummary.creationDate == expectedCreationDate)
+        
+        // Test last logoff date
+        let expectedLastLogoffDate = Date(timeIntervalSince1970: 1_720_361_031)
+        #expect(playerSummary.lastLogoffDate == expectedLastLogoffDate)
+        
+        // Note: We can't test exact strings for accountAge and timeSinceLastLogoff
+        // as they depend on the current date when the test is run.
+        // Instead, we can check that they're not empty
+        #expect(!playerSummary.accountAge.isEmpty)
+        #expect(!playerSummary.timeSinceLastLogoff.isEmpty)
     }
     
     @Test func testOwnedGames() throws {
@@ -45,15 +66,46 @@ struct SteamAPITests {
         #expect(firstGame.name == "Counter-Strike")
         #expect(firstGame.playtime_forever == 2177)
         #expect(firstGame.img_icon_url == "6b0312cda02f5f777efa2f3318c307ff9acafbb5")
-        #expect(firstGame.img_icon_url_url == URL(string: "6b0312cda02f5f777efa2f3318c307ff9acafbb5"))
+        #expect(firstGame.iconURL == URL(string: "https://media.steampowered.com/steamcommunity/public/images/apps/10/6b0312cda02f5f777efa2f3318c307ff9acafbb5.jpg"))
         #expect(firstGame.playtime_windows_forever == 0)
         #expect(firstGame.playtime_mac_forever == 0)
         #expect(firstGame.playtime_linux_forever == 0)
+        
+        // Test computed properties
+        #expect(firstGame.totalPlaytimeHours == 36.28333333333333)
+        #expect(firstGame.isRecentlyPlayed == false)
+        #expect(firstGame.primaryPlatform == .windows)
+        
+        let playtimePercentages = firstGame.playtimePercentages
+        #expect(playtimePercentages[.windows] == 0)
+        #expect(playtimePercentages[.mac] == 0)
+        #expect(playtimePercentages[.linux] == 0)
+        #expect(playtimePercentages[.steamDeck] == nil)
         
         let dota2 = try #require(response.response.games.first { $0.appid == 570 })
         #expect(dota2.name == "Dota 2")
         #expect(dota2.playtime_forever == 23517)
         #expect(dota2.playtime_windows_forever == 891)
+        
+        // Test Dota 2 computed properties
+        #expect(dota2.totalPlaytimeHours == 391.95)
+        #expect(dota2.primaryPlatform == .windows)
+        
+        let dota2PlaytimePercentages = dota2.playtimePercentages
+        #expect(dota2PlaytimePercentages[.windows] == 100)
+        #expect(dota2PlaytimePercentages[.mac] == 0)
+        #expect(dota2PlaytimePercentages[.linux] == 0)
+        #expect(dota2PlaytimePercentages[.steamDeck] == nil)
+        
+        // Note: We can't test exact string for lastPlayedAgo as it depends on the current date
+        // Instead, we can check that it's not empty
+        #expect(!dota2.lastPlayedAgo.isEmpty)
+        
+        // Test content descriptors if available in the test data
+        if let contentDescriptors = dota2.content_descriptorids {
+            #expect(!contentDescriptors.isEmpty)
+            #expect(dota2.hasMatureContent == contentDescriptors.contains(.frequentViolenceOrGore))
+        }
     }
     
     @Test func testNews() throws {
@@ -69,12 +121,34 @@ struct SteamAPITests {
         #expect(firstNewsItem.gid == "5842939267344677906")
         #expect(firstNewsItem.title == "Witcher 3 mod restores cut boat-racing quests")
         #expect(firstNewsItem.url.absoluteString == "https://steamstore-a.akamaihd.net/news/externalpost/PC%20Gamer/5842939267344677906")
-        #expect(firstNewsItem.is_external_url)
+        #expect(firstNewsItem.isExternalUrl)
         #expect(firstNewsItem.author == "Jody Macgregor")
         #expect(firstNewsItem.contents.starts(with: "<img src=\"https://cdn.mos.cms.futurecdn.net/ePdQwZjBaqzcr82pZKCJwT.jpg\"/>"))
         #expect(firstNewsItem.feedlabel == "PC Gamer")
         #expect(firstNewsItem.date == 1720326072)
         #expect(firstNewsItem.feedname == "PC Gamer")
+        
+        // Test new properties and computed properties
+        #expect(firstNewsItem.feedType == .unknown) // Assuming the feed_type in the test data is 0
+        #expect(firstNewsItem.publicationDate == Date(timeIntervalSince1970: 1720326072))
+        
+        // Test plainTextContents
+        #expect(!firstNewsItem.plainTextContents.contains("<"))
+        #expect(!firstNewsItem.plainTextContents.contains(">"))
+        
+        // Test shortDescription
+        #expect(firstNewsItem.shortDescription.count <= 103) // 100 characters + potential "..."
+        
+        // Test hasTags
+        if let tags = firstNewsItem.tags {
+            #expect(firstNewsItem.hasTags == !tags.isEmpty)
+        } else {
+            #expect(firstNewsItem.hasTags == false)
+        }
+        
+        // Note: We can't test exact string for publishedAgo as it depends on the current date
+        // Instead, we can check that it's not empty
+        #expect(!firstNewsItem.publishedAgo.isEmpty)
     }
     
     private func decodeJSON<T: Decodable>(_ type: T.Type, from filename: String) throws -> T {
