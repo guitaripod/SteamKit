@@ -59,9 +59,9 @@ struct SteamAPITests {
         )
         
         #expect(response.response.game_count == 418)
-        #expect(response.response.games.count == 418)
+        #expect(response.response.games?.count == 418)
         
-        let ffXIII = try #require(response.response.games.first { $0.appid == 292120 })
+        let ffXIII = try #require(response.response.games?.first { $0.appid == 292120 })
         #expect(ffXIII.appid == 292120)
         #expect(ffXIII.name == "FINAL FANTASY XIII")
         #expect(ffXIII.playtime_forever == 7412)

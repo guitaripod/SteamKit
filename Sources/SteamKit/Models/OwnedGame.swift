@@ -106,6 +106,6 @@ public struct OwnedGame: Codable {
 }
 
 struct OwnedGamesResult: Codable {
-    let game_count: Int
-    let games: [OwnedGame]
+    let game_count: Int?
+    let games: [OwnedGame]?
 }

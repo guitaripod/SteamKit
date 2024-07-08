@@ -31,7 +31,7 @@ public struct SteamAPI: SteamAPIProtocol {
         let parameters = ["key": apiKey, "steamid": steamID, "include_appinfo": "1", "include_played_free_games": "1"]
         let data = try await networkClient.performRequest(url: endpoint, parameters: parameters)
         let response = try JSONDecoder().decode(OwnedGamesResponse.self, from: data)
-        return response.response.games
+        return response.response.games ?? []
     }
 
     public func getPlayerAchievements(steamID: String, appID: Int) async throws -> [Achievement] {
