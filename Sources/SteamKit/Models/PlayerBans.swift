@@ -1,5 +1,11 @@
 import Foundation
 
+/// Represents the response structure for player bans.
+public struct PlayerBansResponse: Codable {
+    /// An array of PlayerBans objects.
+    public let players: [PlayerBans]
+}
+
 /// Represents the ban status of a Steam player.
 public struct PlayerBans: Codable {
     /// The Steam ID of the player.
@@ -69,10 +75,4 @@ public struct PlayerBans: Codable {
         case moderate = "Moderate"
         case none = "None"
     }
-}
-
-/// Represents the response structure for player bans.
-public struct PlayerBansResponse: Codable {
-    /// An array of PlayerBans objects.
-    public let players: [PlayerBans]
 }

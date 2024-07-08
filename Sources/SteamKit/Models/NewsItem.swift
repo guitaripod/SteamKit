@@ -1,5 +1,11 @@
 import Foundation
 
+/// Represents the response structure for news items.
+struct NewsForAppResponse: Codable {
+    /// The app news container.
+    let appnews: AppNews
+}
+
 /// Represents a news item for a Steam app.
 public struct NewsItem: Codable {
     /// The global identifier for the news item.
@@ -85,12 +91,6 @@ public struct NewsItem: Codable {
     public var hasTags: Bool {
         return tags?.isEmpty == false
     }
-}
-
-/// Represents the response structure for news items.
-struct NewsForAppResponse: Codable {
-    /// The app news container.
-    let appnews: AppNews
 }
 
 /// Contains news items for an app.

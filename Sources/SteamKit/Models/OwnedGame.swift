@@ -1,5 +1,9 @@
 import Foundation
 
+struct OwnedGamesResponse: Codable {
+    let response: OwnedGamesResult
+}
+
 public struct OwnedGame: Codable {
     public let appid: Int
     public let name: String?
@@ -99,10 +103,6 @@ public struct OwnedGame: Codable {
         content_descriptorids?.contains(where: { $0 == .frequentViolenceOrGore || $0 == .adultOnlySexualContent })
             ?? false
     }
-}
-
-struct OwnedGamesResponse: Codable {
-    let response: OwnedGamesResult
 }
 
 struct OwnedGamesResult: Codable {

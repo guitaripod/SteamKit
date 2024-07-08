@@ -1,5 +1,11 @@
 import Foundation
 
+/// Represents the response structure for recently played games.
+public struct RecentlyPlayedGamesResponse: Codable {
+    /// The response container.
+    public let response: RecentlyPlayedGamesResult
+}
+
 /// Represents a recently played game by a Steam user.
 public struct RecentlyPlayedGame: Codable {
     /// The app ID of the game.
@@ -54,12 +60,6 @@ public struct RecentlyPlayedGame: Codable {
             return "\(minutes) minute\(minutes == 1 ? "" : "s")"
         }
     }
-}
-
-/// Represents the response structure for recently played games.
-public struct RecentlyPlayedGamesResponse: Codable {
-    /// The response container.
-    public let response: RecentlyPlayedGamesResult
 }
 
 /// Contains the result of a recently played games request.

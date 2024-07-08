@@ -1,5 +1,11 @@
 import Foundation
 
+/// Represents the response structure for player summaries.
+struct PlayerSummariesResponse: Codable {
+    /// The response container.
+    let response: PlayerSummariesResult
+}
+
 /// Represents a summary of a Steam player's profile.
 public struct PlayerSummary: Codable {
     /// The Steam ID of the player.
@@ -181,12 +187,6 @@ public struct PlayerSummary: Codable {
         if personastateflags.contains(.clientTypeVR) { return "VR" }
         return "Desktop"
     }
-}
-
-/// Represents the response structure for player summaries.
-struct PlayerSummariesResponse: Codable {
-    /// The response container.
-    let response: PlayerSummariesResult
 }
 
 /// Contains the result of a player summaries request.

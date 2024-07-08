@@ -1,5 +1,11 @@
 import Foundation
 
+/// Represents the response structure for a game schema request.
+public struct GameSchemaResponse: Codable {
+    /// The game schema.
+    public let game: GameSchema
+}
+
 /// Represents the schema for a game in Steam.
 public struct GameSchema: Codable {
     /// The name of the game.
@@ -85,10 +91,4 @@ public struct AchievementSchema: Codable {
     public var grayIconURL: URL {
         URL(string: icongray)!
     }
-}
-
-/// Represents the response structure for a game schema request.
-public struct GameSchemaResponse: Codable {
-    /// The game schema.
-    public let game: GameSchema
 }
