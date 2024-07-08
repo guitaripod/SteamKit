@@ -7,22 +7,48 @@ public struct Achievement: Codable {
 
     /// Indicates whether the achievement has been achieved (1) or not (0).
     public let achieved: Int
+
+    /// Returns true if the achievement has been unlocked.
+    public var isUnlocked: Bool {
+        achieved == 1
+    }
+
+    /// Returns a user-friendly status string for the achievement.
+    public var status: String {
+        isUnlocked ? "Unlocked" : "Locked"
+    }
 }
 
 /// Represents the response structure for player achievements.
-struct PlayerAchievementsResponse: Codable {
+public struct PlayerAchievementsResponse: Codable {
     /// The player stats containing achievements.
-    let playerstats: PlayerStats
+    public let playerstats: PlayerStats
 }
 
 /// Represents player statistics including achievements.
-struct PlayerStats: Codable {
+public struct PlayerStats: Codable {
     /// The Steam ID of the player.
-    let steamID: String
+    public let steamID: String
 
     /// The name of the game.
-    let gameName: String
+    public let gameName: String
 
     /// An array of achievements for the player in this game.
-    let achievements: [Achievement]
+    public let achievements: [Achievement]
+
+    /// Returns the total number of achievements for the game.
+    public var totalAchievements: Int {
+        achievements.count
+    }
+
+    /// Returns the number of unlocked achievements.
+    public var unlockedAchievements: Int {
+        achievements.filter { $0.isUnlocked }.count
+    }
+
+    /// Returns the percentage of achievements unlocked.
+    public var achievementCompletionPercentage: Double {
+        guard totalAchievements > 0 else { return 0 }
+        return Double(unlockedAchievements) / Double(totalAchievements) * 100
+    }
 }

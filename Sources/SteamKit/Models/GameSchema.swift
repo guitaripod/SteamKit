@@ -10,6 +10,21 @@ public struct GameSchema: Codable {
 
     /// The available game stats and achievements.
     public let availableGameStats: AvailableGameStats
+
+    /// Returns the total number of statistics for the game.
+    public var totalStats: Int {
+        availableGameStats.stats.count
+    }
+
+    /// Returns the total number of achievements for the game.
+    public var totalAchievements: Int {
+        availableGameStats.achievements.count
+    }
+
+    /// Returns the number of hidden achievements.
+    public var hiddenAchievements: Int {
+        availableGameStats.achievements.filter { $0.hidden == 1 }.count
+    }
 }
 
 /// Contains the available statistics and achievements for a game.
@@ -55,10 +70,25 @@ public struct AchievementSchema: Codable {
 
     /// The URL of the achievement's gray (locked) icon.
     public let icongray: String
+
+    /// Returns true if the achievement is hidden.
+    public var isHidden: Bool {
+        hidden == 1
+    }
+
+    /// Returns the full URL for the achievement's icon.
+    public var iconURL: URL {
+        URL(string: icon)!
+    }
+
+    /// Returns the full URL for the achievement's gray (locked) icon.
+    public var grayIconURL: URL {
+        URL(string: icongray)!
+    }
 }
 
 /// Represents the response structure for a game schema request.
-struct GameSchemaResponse: Codable {
+public struct GameSchemaResponse: Codable {
     /// The game schema.
-    let game: GameSchema
+    public let game: GameSchema
 }
