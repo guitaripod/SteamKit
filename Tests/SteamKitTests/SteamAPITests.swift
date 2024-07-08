@@ -61,50 +61,37 @@ struct SteamAPITests {
         #expect(response.response.game_count == 418)
         #expect(response.response.games.count == 418)
         
-        let firstGame = try #require(response.response.games.first)
-        #expect(firstGame.appid == 10)
-        #expect(firstGame.name == "Counter-Strike")
-        #expect(firstGame.playtime_forever == 2177)
-        #expect(firstGame.img_icon_url == "6b0312cda02f5f777efa2f3318c307ff9acafbb5")
-        #expect(firstGame.iconURL == URL(string: "https://media.steampowered.com/steamcommunity/public/images/apps/10/6b0312cda02f5f777efa2f3318c307ff9acafbb5.jpg"))
-        #expect(firstGame.playtime_windows_forever == 0)
-        #expect(firstGame.playtime_mac_forever == 0)
-        #expect(firstGame.playtime_linux_forever == 0)
+        let ffXIII = try #require(response.response.games.first { $0.appid == 292120 })
+        #expect(ffXIII.appid == 292120)
+        #expect(ffXIII.name == "FINAL FANTASY XIII")
+        #expect(ffXIII.playtime_forever == 7412)
+        #expect(ffXIII.img_icon_url == "83c929d4965963f6e0bc17969a2599e7829ac23d")
+        #expect(ffXIII.has_community_visible_stats == true)
+        #expect(ffXIII.playtime_windows_forever == 1737)
+        #expect(ffXIII.playtime_mac_forever == 0)
+        #expect(ffXIII.playtime_linux_forever == 735)
+        #expect(ffXIII.playtime_deck_forever == 735)
+        #expect(ffXIII.rtime_last_played == 1719375659)
         
         // Test computed properties
-        #expect(firstGame.totalPlaytimeHours == 36.28333333333333)
-        #expect(firstGame.isRecentlyPlayed == false)
-        #expect(firstGame.primaryPlatform == .windows)
+        #expect(ffXIII.totalPlaytimeHours == 123.53333333333333)
+        #expect(ffXIII.isRecentlyPlayed == true)
+        #expect(ffXIII.primaryPlatform == .windows)
         
-        let playtimePercentages = firstGame.playtimePercentages
-        #expect(playtimePercentages[.windows] == 0)
+        let playtimePercentages = ffXIII.playtimePercentages
+        #expect(playtimePercentages[.windows] == 54.16276894293732)
         #expect(playtimePercentages[.mac] == 0)
-        #expect(playtimePercentages[.linux] == 0)
-        #expect(playtimePercentages[.steamDeck] == nil)
-        
-        let dota2 = try #require(response.response.games.first { $0.appid == 570 })
-        #expect(dota2.name == "Dota 2")
-        #expect(dota2.playtime_forever == 23517)
-        #expect(dota2.playtime_windows_forever == 891)
-        
-        // Test Dota 2 computed properties
-        #expect(dota2.totalPlaytimeHours == 391.95)
-        #expect(dota2.primaryPlatform == .windows)
-        
-        let dota2PlaytimePercentages = dota2.playtimePercentages
-        #expect(dota2PlaytimePercentages[.windows] == 100)
-        #expect(dota2PlaytimePercentages[.mac] == 0)
-        #expect(dota2PlaytimePercentages[.linux] == 0)
-        #expect(dota2PlaytimePercentages[.steamDeck] == nil)
+        #expect(playtimePercentages[.linux] == 22.91861552853134)
+        #expect(playtimePercentages[.steamDeck] == 22.91861552853134)
         
         // Note: We can't test exact string for lastPlayedAgo as it depends on the current date
         // Instead, we can check that it's not empty
-        #expect(!dota2.lastPlayedAgo.isEmpty)
+        #expect(!ffXIII.lastPlayedAgo.isEmpty)
         
         // Test content descriptors if available in the test data
-        if let contentDescriptors = dota2.content_descriptorids {
+        if let contentDescriptors = ffXIII.content_descriptorids {
             #expect(!contentDescriptors.isEmpty)
-            #expect(dota2.hasMatureContent == contentDescriptors.contains(.frequentViolenceOrGore))
+            #expect(ffXIII.hasMatureContent == contentDescriptors.contains(.frequentViolenceOrGore))
         }
     }
     
